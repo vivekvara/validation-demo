@@ -28,19 +28,25 @@ import lombok.ToString;
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @NotEmpty(message = "Name is mandatory")
     private String name;
+
     @NotEmpty(message = "Email is mandatory")
     @Email
     private String email;
+
     @Pattern(regexp = "((?=.*[a-z])(?=.*\\\\d)(?=.*[A-Z])(?=.*[@#$%!]).{8,40})")
     private String password;
+
     @Min(18)
     @Max(60)
     private Integer age;
+
     @NotEmpty
     @Country
     private String country;

@@ -18,7 +18,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 @Constraint(validatedBy = CountryValidator.class)
 public @interface Country {
     //error message
-    String message() default "Invalid country";
+    String message() default "Country is invalid";
 
     //represents group of constraints
     Class<?>[] groups() default {};

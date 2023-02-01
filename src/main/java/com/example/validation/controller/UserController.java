@@ -1,7 +1,9 @@
 package com.example.validation.controller;
 
+import com.example.validation.dto.UserDto;
 import com.example.validation.entity.User;
 import com.example.validation.exception.ResourceNotFoundException;
+import com.example.validation.mapper.UserMapper;
 import com.example.validation.repository.UserRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -29,31 +31,32 @@ import java.util.List;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @GetMapping("/users")
-    public List<User> getUsers() {
-        return (List<User>) userRepository.findAll();
+    public List<UserDto> getUsers() {
+        return userMapper.map((List<User>) userRepository.findAll());
     }
 
     @GetMapping("/users/{id}")
-    ResponseEntity<User> getById(@PathVariable("id") @Min(1) Long id) {
+    ResponseEntity<UserDto> getById(@PathVariable("id") @Min(1) Long id) {
         User usr = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with ID :" + id + " Not Found!"));
 
-        return ResponseEntity.ok().body(usr);
+        return ResponseEntity.ok().body(userMapper.map(usr));
     }
 
     @GetMapping("/user")
-    ResponseEntity<User> getByUsername(@RequestParam() String username) {
+    ResponseEntity<UserDto> getByUsername(@RequestParam() String username) {
         User usr = userRepository.findByName(username)
                 .orElseThrow(() -> new ResourceNotFoundException(username + " NOT Found!"));
 
-        return ResponseEntity.ok().body(usr);
+        return ResponseEntity.ok().body(userMapper.map(usr));
     }
 
     @PostMapping("/users")
-    ResponseEntity<?> addUser(@Valid @RequestBody User user) {
-        User addeduser = userRepository.save(user);
+    ResponseEntity<?> addUser(@Valid @RequestBody UserDto user) {
+        User addeduser = userRepository.save(userMapper.map(user));
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(addeduser.getId())
@@ -63,13 +66,14 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    ResponseEntity<User> update(@PathVariable("id") @Min(1) Long id, @Valid @RequestBody User user) {
-        User puser = userRepository.findById(id)
+    ResponseEntity<?> update(@PathVariable("id") @Min(1) Long id, @Valid @RequestBody UserDto userDto) {
+        userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with ID :" + id + " Not Found!"));
 
-        user.setId(puser.getId());
+        User user = userMapper.map(userDto);
+        user.setId(id);
         userRepository.save(user);
-        return ResponseEntity.ok().body(user);
+        return ResponseEntity.noContent().build();
 
     }
 

@@ -47,7 +47,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // handleHttpMessageNotReadable : triggers when the JSON is malformed
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-
         List<String> details = new ArrayList<>();
         details.add(ex.getMessage());
 
@@ -59,7 +58,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // handleMethodArgumentNotValid : triggers when @Valid fails
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-
         List<String> details = ex.getBindingResult().getFieldErrors().stream().map(error -> error.getObjectName() + " : " + error.getDefaultMessage()).collect(Collectors.toList());
 
         ApiError err = new ApiError(LocalDateTime.now(), BAD_REQUEST, "Validation Errors", details);
@@ -69,7 +67,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex, WebRequest request) {
-
         List<String> details = new ArrayList<>();
         details.add(ex.getMessage());
 
@@ -81,7 +78,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // handleMissingServletRequestParameter : triggers when there are missing parameters
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-
         List<String> details = new ArrayList<>();
         details.add(ex.getParameterName() + " parameter is missing");
 
@@ -92,7 +88,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-
         List<String> details = new ArrayList<>();
         details.add(String.format("Could not find the %s method for URL %s", ex.getHttpMethod(), ex.getRequestURL()));
 
@@ -103,7 +98,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
-
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
 
