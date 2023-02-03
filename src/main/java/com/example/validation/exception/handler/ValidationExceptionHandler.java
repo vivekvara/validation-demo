@@ -19,7 +19,6 @@ public class ValidationExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> handleConstraintViolationException(Exception ex, WebRequest request) {
-
         List<String> details = new ArrayList<>();
         details.add(ex.getMessage());
 

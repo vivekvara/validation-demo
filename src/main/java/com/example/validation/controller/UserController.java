@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok().body(userMapper.map(usr));
     }
 
-    @GetMapping("/user")
+    @GetMapping("/users/username")
     ResponseEntity<UserDto> getByUsername(@RequestParam() String username) {
         User usr = userRepository.findByName(username)
                 .orElseThrow(() -> new ResourceNotFoundException(username + " NOT Found!"));

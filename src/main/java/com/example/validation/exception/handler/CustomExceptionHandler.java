@@ -16,7 +16,6 @@ import java.util.List;
 public class CustomExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex) {
-
         List<String> details = new ArrayList<>();
         details.add(ex.getMessage());
 

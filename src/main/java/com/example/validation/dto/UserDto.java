@@ -17,6 +17,7 @@ import lombok.Data;
 public class UserDto {
 
     @NotBlank(groups = BasicInfo.class)
+    @NotNull
     private String name;
 
     @NotNull(groups = BasicInfo.class)
@@ -28,7 +29,7 @@ public class UserDto {
     private Integer age;
 
     @NotNull(groups = BasicInfo.class)
-    @Country
+    @Country(groups = AdvanceInfo.class)
     private String country;
 
     @NotNull(groups = AdvanceInfo.class, message = "IP Address must not be null")
